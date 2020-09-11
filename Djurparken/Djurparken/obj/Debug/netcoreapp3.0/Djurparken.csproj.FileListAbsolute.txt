@@ -1,0 +1,11 @@
+C:\Users\hugom\source\repos\Djurparken\Djurparken\bin\Debug\netcoreapp3.0\Djurparken.exe
+C:\Users\hugom\source\repos\Djurparken\Djurparken\bin\Debug\netcoreapp3.0\Djurparken.deps.json
+C:\Users\hugom\source\repos\Djurparken\Djurparken\bin\Debug\netcoreapp3.0\Djurparken.runtimeconfig.json
+C:\Users\hugom\source\repos\Djurparken\Djurparken\bin\Debug\netcoreapp3.0\Djurparken.runtimeconfig.dev.json
+C:\Users\hugom\source\repos\Djurparken\Djurparken\bin\Debug\netcoreapp3.0\Djurparken.dll
+C:\Users\hugom\source\repos\Djurparken\Djurparken\bin\Debug\netcoreapp3.0\Djurparken.pdb
+C:\Users\hugom\source\repos\Djurparken\Djurparken\obj\Debug\netcoreapp3.0\Djurparken.csprojAssemblyReference.cache
+C:\Users\hugom\source\repos\Djurparken\Djurparken\obj\Debug\netcoreapp3.0\Djurparken.AssemblyInfoInputs.cache
+C:\Users\hugom\source\repos\Djurparken\Djurparken\obj\Debug\netcoreapp3.0\Djurparken.AssemblyInfo.cs
+C:\Users\hugom\source\repos\Djurparken\Djurparken\obj\Debug\netcoreapp3.0\Djurparken.dll
+C:\Users\hugom\source\repos\Djurparken\Djurparken\obj\Debug\netcoreapp3.0\Djurparken.pdb

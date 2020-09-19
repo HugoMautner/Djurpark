@@ -1,16 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 public abstract class Animal
 {
-    protected int id;
-    protected string name;
-    protected bool living = true;
+    public string Name { get; protected set; }
+    public abstract int GetId();
+    public bool Living { get; protected set; }
 
+
+    public Animal(int id, string name)
+    {
+        Name = name;
+        id = 100200;
+    }
 
     public override string ToString()
     {
-        return id + ", " + name + ", " + living;
+        return (GetId() + ", " + Name + ", ");
     }
 }

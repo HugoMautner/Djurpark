@@ -1,34 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-class Tiger : Animal
+public class Tiger : Animal
 {
-    private float weight;
+    public float Weight { get; private set; }
+    public int speciesIndex = 1;
 
+    public Tiger(int id, string name, float weight) : base(id, name)
+    {
+        weight = Weight;
 
-    public int GetId()
-    {
-        //calculate weight + whatever
-        return id;
+        if (weight < 0)
+            throw new ArgumentException();
     }
-    public string GetName()
+    
+    public override int GetId()
     {
-        return name;
-    }
-    public float GetWeight()
-    {
-        return weight;
-    }
-    public bool GetLiving()
-    {
-        return living;
-    }
+        Random rnd = new Random();
 
-
+        return rnd.Next(000000, 999999);
+    }
 
     public override string ToString()
     {
-        return base.ToString() + ", " + weight;
+        return base.ToString() + ", " + Weight;
     }
 }

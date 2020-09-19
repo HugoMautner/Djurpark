@@ -1,33 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-class Elephant : Animal
+public class Elephant : Animal
 {
-    private float trunkLength;
+    public float TrunkLength { get; private set; }
+    public int speciesIndex = 3;
 
-    public int GetId()
+    public Elephant(string name, int id, float trunkLength) : base(name, id)
     {
-        //calculate trunk + whatever
-        return id;
-    }
-    public string GetName()
-    {
-        return name;
-    }
-    public float GetTrunkLength()
-    {
-        return trunkLength;
-    }
-    public bool GetLiving()
-    {
-        return living;
-    }
+        trunkLength = TrunkLength;
 
-    //needs specific constructor
+        if (trunkLength < 0)
+            throw new ArgumentException();
+    }
+    public override int GetId()
+    {
+        Random rnd = new Random();
+
+        return rnd.Next(000000, 999999);
+    }
 
     public override string ToString()
     {
-        return base.ToString() + ", " + trunkLength;
+        return base.ToString() + ", " + TrunkLength;
     }
 }

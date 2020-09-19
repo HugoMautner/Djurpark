@@ -19,16 +19,17 @@ class Program
     void Run()
     {
         using (StreamWriter sw = File.AppendText(path)) { }
-        using (StreamWriter sw = File.AppendText(path2)) { }
+        using (StreamWriter sw2 = File.AppendText(path2)) { }
 
         Load();
+        LoadDeceased();
         Intro();
         Commands();
     }
 
     private void Intro()
     {
-        Console.WriteLine("Welcome to Animal Park\n");
+        Console.WriteLine("Welcome to the Klara Södra Animal Park\n");
         Console.WriteLine("  <Type> ");
         Console.WriteLine("'add' to register in a newly arrived animal");
         Console.WriteLine("'update' to look for and change data/status of specific animal in the database");
@@ -61,98 +62,56 @@ class Program
                 case "quit":
                     SaveLiving(); SaveDeceased(); Quit(); break;
                 default:
-                    Console.WriteLine("Unknown Command");
-                    break;
+                    Console.WriteLine("Unknown Command"); break;
             }
         }
     }
+
     private void Add()
     {
-
-
         while (true)
         {
             try
             {
-                #region ticket specification
-                //Specifies adult tickets
-                Console.WriteLine("Enter in the amount of adult tickets for this transaction, '0' if none");
-                string input = Console.ReadLine();
+                Console.WriteLine("Type:\n'1' to register a tiger\n'2' to register an elephant\n'3' to register an owl\n");
+                string species = Console.ReadLine();
 
-                if (input == "cancel")
-                { Clear(); Console.WriteLine("Cancelled transaction"); return; }
 
-                int adults = int.Parse(input);
-                if (adults > 2000)
-                {
-                    Console.WriteLine("Too many tickets requested");
-                    continue;
-                }
 
-                //specifies child tickets
-                Console.WriteLine("Enter in the amount of child tickets for this transaction, '0' if none");
-                string input2 = Console.ReadLine();
 
-                if (input == "cancel")
-                { Clear(); Console.WriteLine("Cancelled transaction"); return; }
+                Console.WriteLine("Please enter a name for the animal: ");
+                string name = Console.ReadLine();
 
-                int children = int.Parse(input2);
-                if (children > 2000)
-                {
-                    Console.WriteLine("Too many tickets requested");
-                    continue;
-                }
 
-                //specifies senior tickets
-                Console.WriteLine("Enter in the amount of senior tickets for this transaction, '0' if none");
-                string input3 = Console.ReadLine();
 
-                if (input == "cancel")
-                { Clear(); Console.WriteLine("Cancelled transaction"); return; }
-
-                int seniors = int.Parse(input3);
-                if (seniors > 2000)
-                {
-                    Console.WriteLine("Too many tickets requested");
-                    continue;
-                }
-
-                if (adults + children + seniors == 0)
-                {
-                    Console.WriteLine("Minimun ticket amount: 1");
-                    continue;
-                }
-                #endregion
 
                 //Add Tiger
-                Tiger t = new Tiger();
-                animals.Add(t);
+
+                //Tiger t = new Tiger(id, name, weight);
+                //animals.Add(t);
 
                 //Add Elephant
-                Elephant e = new Elephant();
-                animals.Add(e);
+
+                //Elephant e = new Elephant(id, name, trunkLength);
+                //animals.Add(e);
 
                 //Add Owl
-                Owl o = new Owl();
-                animals.Add(o);
+
+                //Owl o = new Owl(id, name, wingSpan);
+                //animals.Add(o);
 
                 Console.WriteLine("YOur animal was added");
                 return;
             }
             catch
             {
-                Console.WriteLine("Please specify tickets with whole numbers");
+                Console.WriteLine("Error");
             }
         }
     }
     private void Search()
     {
         Console.WriteLine("searching");
-    }
-
-    private void ChangeLiving()
-    {
-        Console.WriteLine("Changing status");
     }
     private void PrintLiving()
     {
@@ -167,12 +126,22 @@ class Program
     {
         using (StreamReader sr = new StreamReader(path, true))
         {
-            //skip appropriate amounts of lines
             sr.ReadLine();
-            sr.ReadLine();
-
             string text;
-            int ID;
+
+            //load tigers
+            sr.ReadLine();
+            sr.ReadLine();
+            while ((text = sr.ReadLine()) != null)
+            {
+                string[] strings = text.Split(char.Parse(","));
+                int id = int.Parse(strings[0]);
+                string name = strings[1];
+                float weight = float.Parse(strings[2]);
+
+                Tiger t = new Tiger(id, name, weight);
+                animals.Add(t);
+            }
         }
     }
 
@@ -182,10 +151,8 @@ class Program
         {
             //skip appropriate amounts of lines
             sr.ReadLine();
-            sr.ReadLine();
 
-            string text;
-            int ID;
+
         }
     }
 
@@ -194,21 +161,21 @@ class Program
         System.IO.File.WriteAllText(path, "");
         using (StreamWriter sw = new StreamWriter(path, true))
         {
-            sw.WriteLine("Animals\n");
+            sw.WriteLine("<Animals>\n");
 
-            sw.WriteLine("<Current tigers at the zoo>\n(ID, Name");
-            foreach (Tiger a in animals)
-                if (a.GetLiving() == true)
-                    sw.WriteLine(a.ToString());
+            sw.WriteLine("<Current tigers at the zoo>\n(ID, Name, Weight (kg)");
+            foreach (Tiger t in animals)
+                if (t.Living == true)
+                    sw.WriteLine(t.ToString());
 
-            sw.WriteLine("<Current elephants at the zoo>\n(ID, Name");
+            sw.WriteLine("<Current elephants at the zoo>\n(ID, Name, Trunk length (m)");
             foreach (Elephant e in animals)
-                if (e.GetLiving() == true)
+                if (e.Living == true)
                     sw.WriteLine(e.ToString());
 
-            sw.WriteLine("<Current owls at the zoo>\n(ID, Name");
+            sw.WriteLine("<Current owls at the zoo>\n(ID, Name, Wingspan (m)");
             foreach (Owl o in animals)
-                if (o.GetLiving() == true)
+                if (o.Living == true)
                     sw.WriteLine(o.ToString());
         }
     }
@@ -218,22 +185,22 @@ class Program
         System.IO.File.WriteAllText(path2, "");
         using (StreamWriter sw = new StreamWriter(path2, true))
         {
-            sw.WriteLine("Deceased animals\n");
+            sw.WriteLine("Deceased animals:");
 
-            sw.WriteLine("<Deceased tigers from the zoo>\n(ID, Name");
-            foreach (Tiger a in animals)
-                if (!a.GetLiving())
-                    sw.WriteLine(a.ToString());
+            sw.WriteLine("<Tigers in zoo>\n(Name, Id, Weight");
+            foreach (Tiger t in animals)
+                if (t.Living == false)
+                    sw.WriteLine(t.ToString());
 
-            sw.WriteLine("<Deceased elephants from the zoo>\n(ID, Name");
-            foreach (Elephant e in animals)
-                if (!e.GetLiving())
-                    sw.WriteLine(e.ToString());
-
-            sw.WriteLine("<Deceased owls from the zoo>\n(ID, Name");
+            sw.WriteLine("<Owls in zoo>\n(Name, Id, Wingspan");
             foreach (Owl o in animals)
-                if (!o.GetLiving())
+                if (o.Living == false)
                     sw.WriteLine(o.ToString());
+
+            sw.WriteLine("<Elephants in zoo>\n(Name, Id, Trunk length");
+            foreach (Elephant e in animals)
+                if (e.Living == false)
+                    sw.WriteLine(e.ToString());
         }
     }
 

@@ -2,17 +2,18 @@
 
 public class Tiger : Animal
 {
-    public float Weight { get; private set; }
+    public decimal Weight { get; private set; }
     public int speciesIndex = 1;
+    public bool living { get; private set; }
 
-    public Tiger(int id, string name, float weight) : base(id, name)
+    public Tiger(string name, decimal weight, bool living) : base(name, living)
     {
-        weight = Weight;
-
         if (weight < 0)
             throw new ArgumentException();
+        weight = Weight;
+
+
     }
-    
     public override int GetId()
     {
         Random rnd = new Random();
@@ -22,6 +23,6 @@ public class Tiger : Animal
 
     public override string ToString()
     {
-        return base.ToString() + ", " + Weight;
+        return base.ToString() + ", " + Weight + ", " + speciesIndex;
     }
 }

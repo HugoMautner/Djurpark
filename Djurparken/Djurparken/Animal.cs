@@ -6,15 +6,14 @@ public abstract class Animal
     public abstract int GetId();
     public bool Living { get; protected set; }
 
-
-    public Animal(int id, string name)
+    public Animal(string name, bool living)
     {
         Name = name;
-        id = 100200;
+        Living = living;
     }
 
     public override string ToString()
     {
-        return (GetId() + ", " + Name + ", ");
+        return (GetId() + ", " + Name + ", " + Living);
     }
 }

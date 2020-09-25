@@ -29,9 +29,9 @@ class Program
 
     private void Intro()
     {
-        Console.WriteLine("Welcome to the Klara Södra Animal Park\n");
-        Console.WriteLine("  <Type> ");
-        Console.WriteLine("'add' to register in a newly arrived animal");
+        Console.WriteLine("Welcome to the Animal Park\n");
+        Console.WriteLine("  <Input> ");
+        Console.WriteLine("'add' to register a newly arrived animal");
         Console.WriteLine("'update' to look for and change data/status of specific animal in the database");
         Console.WriteLine("'all' to display all current animals in the park");
         Console.WriteLine("'deceased' to display info about all deceased animals from the park's history");
@@ -69,46 +69,313 @@ class Program
 
     private void Add()
     {
+        Console.WriteLine("Is the animal you are adding a:");
+        Console.WriteLine("1. Tiger");
+        Console.WriteLine("2. Elephant");
+        Console.WriteLine("3. Owl");
+        Console.WriteLine("4. Other");
+        Console.WriteLine("\n0. Cancel registration");
+
         while (true)
         {
+            string input = Console.ReadLine();
             try
             {
-                Console.WriteLine("Type:\n'1' to register a tiger\n'2' to register an elephant\n'3' to register an owl\n");
-                string species = Console.ReadLine();
+                int realInput = int.Parse(input);
 
-
-
-
-                Console.WriteLine("Please enter a name for the animal: ");
-                string name = Console.ReadLine();
-
-
-
-
-                //Add Tiger
-
-                //Tiger t = new Tiger(id, name, weight);
-                //animals.Add(t);
-
-                //Add Elephant
-
-                //Elephant e = new Elephant(id, name, trunkLength);
-                //animals.Add(e);
-
-                //Add Owl
-
-                //Owl o = new Owl(id, name, wingSpan);
-                //animals.Add(o);
-
-                Console.WriteLine("YOur animal was added");
-                return;
+                if (realInput == 0)
+                {
+                    Clear();
+                    Console.WriteLine("Cancelled");
+                    return;
+                }
+                else if (realInput == 1)
+                {
+                    AddTiger();
+                    return;
+                }
+                else if (realInput == 2)
+                {
+                    AddElephant();
+                    return;
+                }
+                else if (realInput == 3)
+                {
+                    AddOwl();
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Not an option, try again");
+                }
             }
             catch
             {
-                Console.WriteLine("Error");
+                Console.WriteLine("Please use a whole number");
             }
         }
     }
+
+    private void AddTiger()
+    {
+        string name;
+        string weight;
+
+        #region name
+        while (true)
+        {
+            Console.WriteLine("Enter your tiger's name: ");
+            name = Console.ReadLine();
+            name = name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+
+            foreach (Tiger t in animals)
+            {
+                if (name == t.Name)
+                {
+                    Console.WriteLine("There is already a tiger with that name at this zoo." +
+                        "Please enter a unique name");
+                    continue;
+                }
+            }
+            if (name.Length > 20)
+            {
+                Console.WriteLine("Please enter a shorter name");
+                continue;
+            }
+            else if (name.Contains(" "))
+            {
+                Console.WriteLine("Names can't contain spaces");
+                continue;
+            }
+            else
+                break;
+        }
+        #endregion
+        #region special + add
+        while (true)
+        {
+            Console.WriteLine("Enter your tigers weight (kg): ");
+            weight = Console.ReadLine();
+
+            try
+            {
+                decimal realWeight = decimal.Parse(weight);
+
+                if (realWeight < 0)
+                {
+                    Console.WriteLine("Value of the tiger's weight cannot be negative. Try again");
+                    break;
+                }
+                int count = BitConverter.GetBytes(decimal.GetBits(realWeight)[3])[2];
+                if (count > 5)
+                {
+                    Console.WriteLine("Maximum precision: 5 decimals. Try again");
+                    break;
+                }
+
+                Console.WriteLine("Please confirm that the specifics are correct: \n" +
+                    "Name: " + name + "\nWeight: " + realWeight + " kg\nDo you wish to add this tiger? y/n");
+
+                string input = Console.ReadLine().ToLower();
+                if (input == "n")
+                {
+                    Clear();
+                    Console.WriteLine("\nCancelled registration\n");
+                    return;
+                }
+                else if (input == "y")
+                {
+                    Tiger t = new Tiger(name, realWeight, true);
+                    Console.WriteLine("Your tiger was added [id, name, status (living), weight (kg), species index (tiger)]");
+                    Console.WriteLine(t.ToString());
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter 'y' or 'n'");
+                    continue;
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Please specify with a decimal number");
+            }
+        }
+        #endregion
+    }
+    private void AddElephant()
+    {
+        string name;
+        string trunkLength;
+
+        #region name
+        while (true)
+        {
+            Console.WriteLine("Enter your Elephant's name: ");
+            name = Console.ReadLine();
+            name = name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+            foreach (Elephant e in animals)
+            {
+                if (name == e.Name)
+                {
+                    Console.WriteLine("There is already an elephant with that name at this zoo." +
+                        "Please enter a unique name");
+                    break;
+                }
+            }
+            if (name.Length > 20)
+            {
+                Console.WriteLine("Please enter a shorter name");
+                break;
+            }
+            else if (name.Contains(" "))
+            {
+                Console.WriteLine("Names can't contain spaces");
+                break;
+            }
+            else
+                break;
+        }
+        #endregion
+        #region special + add
+        while (true)
+        {
+            Console.WriteLine("Enter your elephant's trunk length (m): ");
+            trunkLength = Console.ReadLine();
+
+            try
+            {
+                decimal realLength = decimal.Parse(trunkLength);
+
+                if (realLength < 0)
+                {
+                    Console.WriteLine("Value of the elephant's trunk length cannot be negative. Try again");
+                    break;
+                }
+                int count = BitConverter.GetBytes(decimal.GetBits(realLength)[3])[2];
+                if (count > 5)
+                {
+                    Console.WriteLine("Maximum precision: 5 decimals. Try again");
+                    break;
+                }
+
+                Console.WriteLine("Please confirm that the specifics are correct: \n" +
+                    "Name: " + name + "\ntrunk length: " + realLength + " m\nDo you wish to add this elephant? y/n");
+
+                string input = Console.ReadLine().ToLower();
+                if (input == "n")
+                {
+                    Clear();
+                    Console.WriteLine("\nCancelled registration\n");
+                    return;
+                }
+                else if (input == "y")
+                {
+                    Elephant e = new Elephant(name, realLength, true);
+                    Console.WriteLine("Your elephant was added [id, name, status (living), " +
+                        "trunk length (m), species index (elephant)]");
+                    Console.WriteLine(e.ToString());
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter 'y' or 'n'");
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Please specify with a decimal number");
+            }
+        }
+        #endregion
+    }
+    private void AddOwl()
+    {
+        string name;
+        string wingSpan;
+
+        #region name
+        while (true)
+        {
+            Console.WriteLine("Enter your owl's name: ");
+            name = Console.ReadLine();
+            name = name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+            foreach (Owl o in animals)
+            {
+                if (name == o.Name)
+                {
+                    Console.WriteLine("There is already an owl with that name at this zoo." +
+                        "Please enter a unique name");
+                    break;
+                }
+            }
+            if (name.Length > 20)
+            {
+                Console.WriteLine("Please enter a shorter name");
+                break;
+            }
+            else if (name.Contains(" "))
+            {
+                Console.WriteLine("Names can't contain spaces");
+                break;
+            }
+            else
+                break;
+        }
+        #endregion
+        #region special + add
+        while (true)
+        {
+            Console.WriteLine("Enter your owl's wingspan (cm): ");
+            wingSpan = Console.ReadLine();
+
+            try
+            {
+                decimal realSpan = decimal.Parse(wingSpan);
+
+                if (realSpan < 0)
+                {
+                    Console.WriteLine("Value of the owl's wingspan cannot be negative. Try again");
+                    break;
+                }
+                int count = BitConverter.GetBytes(decimal.GetBits(realSpan)[3])[2];
+                if (count > 5)
+                {
+                    Console.WriteLine("Maximum precision: 5 decimals. Try again");
+                    break;
+                }
+
+                Console.WriteLine("Please confirm that the specifics are correct: \n" +
+                    "Name: " + name + "\nWingspan: " + realSpan + " cm\nDo you wish to add this owl? y/n");
+
+                string input = Console.ReadLine().ToLower();
+                if (input == "n")
+                {
+                    Clear();
+                    Console.WriteLine("\nCancelled registration\n");
+                    return;
+                }
+                else if (input == "y")
+                {
+                    Owl o = new Owl(name, realSpan, true);
+                    Console.WriteLine("Your owl was added [id, name, status (living), wingspan (cm), species index (owl)]");
+                    Console.WriteLine(o.ToString());
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter 'y' or 'n'");
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Please specify with a decimal number");
+            }
+        }
+        #endregion
+    }
+
+
     private void Search()
     {
         Console.WriteLine("searching");
@@ -126,21 +393,35 @@ class Program
     {
         using (StreamReader sr = new StreamReader(path, true))
         {
+            //skip appropriate number of lines
             sr.ReadLine();
             string text;
 
-            //load tigers
-            sr.ReadLine();
-            sr.ReadLine();
             while ((text = sr.ReadLine()) != null)
             {
-                string[] strings = text.Split(char.Parse(","));
-                int id = int.Parse(strings[0]);
-                string name = strings[1];
-                float weight = float.Parse(strings[2]);
+                string[] strings = text.Split(char.Parse(", "));
+                string name = strings[0];
+                int id = int.Parse(strings[1]);
+                decimal attribute = decimal.Parse(strings[2]);
+                bool living = bool.Parse(strings[3]);
+                int speciesIndex = int.Parse(strings[4]);
 
-                Tiger t = new Tiger(id, name, weight);
-                animals.Add(t);
+                if (speciesIndex == 1)
+                {
+                    Tiger t = new Tiger(name, attribute, true);
+                    animals.Add(t);
+                }
+                else if (speciesIndex == 2)
+                {
+                    Elephant e = new Elephant(name, attribute, true);
+                    animals.Add(e);
+                }
+                else if (speciesIndex == 3)
+                {
+                    Owl o = new Owl(name, attribute, true);
+                    animals.Add(o);
+                }
+                
             }
         }
     }
@@ -149,9 +430,6 @@ class Program
     {
         using (StreamReader sr = new StreamReader(path2, true))
         {
-            //skip appropriate amounts of lines
-            sr.ReadLine();
-
 
         }
     }

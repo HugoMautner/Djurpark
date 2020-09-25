@@ -2,15 +2,17 @@
 
 public class Elephant : Animal
 {
-    public float TrunkLength { get; private set; }
+    public decimal TrunkLength { get; private set; }
     public int speciesIndex = 3;
+    public bool living { get; private set; }
 
-    public Elephant(string name, int id, float trunkLength) : base(name, id)
+    public Elephant(string name, decimal trunkLength, bool living) : base(name, living)
     {
-        trunkLength = TrunkLength;
-
         if (trunkLength < 0)
             throw new ArgumentException();
+        trunkLength = TrunkLength;
+
+        
     }
     public override int GetId()
     {
@@ -21,6 +23,6 @@ public class Elephant : Animal
 
     public override string ToString()
     {
-        return base.ToString() + ", " + TrunkLength;
+        return base.ToString() + ", " + TrunkLength + ", " + speciesIndex;
     }
 }

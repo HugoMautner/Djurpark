@@ -2,15 +2,16 @@
 
 public class Owl : Animal
 {
-    public float WingSpan { get; private set; }
+    public decimal WingSpan { get; private set; }
     public int speciesIndex = 2;
+    public bool living { get; private set; }
 
-    public Owl(string name, int id, float wingSpan) : base(name, id)
+    public Owl(string name, decimal wingSpan, bool living) : base(name, living)
     {
-        wingSpan = WingSpan;
-
         if (wingSpan < 0)
             throw new ArgumentException();
+        wingSpan = WingSpan;
+
 
     }
     public override int GetId()
@@ -22,6 +23,6 @@ public class Owl : Animal
 
     public override string ToString()
     {
-        return base.ToString() + ", " + WingSpan;
+        return base.ToString() + ", " + WingSpan + ", " + speciesIndex;
     }
 }
